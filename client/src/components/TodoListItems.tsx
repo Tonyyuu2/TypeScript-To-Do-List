@@ -1,12 +1,14 @@
 import React from "react";
 import './styles.css'
+import { Todo } from "../model";
 
 interface Props {
   key: number;
-  title: string;
-  isDone: boolean;
+  todo: Todo;
+  todos: Todo[]
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-export const TodoListItems = ({ key, title, isDone }: Props) => {
-  return <li>{title}</li>;
+export const TodoListItems = ({ todo, key, todos, setTodos }: Props) => {
+  return <li>{}</li>;
 };
