@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styles.css";
 import { Todo } from "../model";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { MdOutlineDone } from "react-icons/md";
+import { MdOutlineDone, MdDownloadDone } from "react-icons/md";
 
 interface Props {
   key: number;
@@ -27,18 +27,48 @@ export const TodoListItems = ({ todo, key, todos, setTodos }: Props) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const handleEdit = (editTodo: string) => {
+  const handleEdit = (e: React.FormEvent<EventTarget>, id: number) => {
+    e.preventDefault();
 
-  }
+    if (editTodo === "") {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, todo: todo.todo } : todo
+        )
+      );
+      setEditTodo(todo.todo);
+    } else {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, todo: editTodo } : todo
+        )
+      );
+    }
+    setEdit(false);
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [edit]);
+
   return (
-    <form className="todos__items" onSubmit={(() => handleEdit(editTodo))}>
+    <form className="todos__items" onSubmit={(e) => handleEdit(e, todo.id)}>
       {edit ? (
-        <input
-          className="input__items--test"
-          value={editTodo}
-          type="input"
-          onChange={(e) => setEditTodo(e.target.value)}
-        />
+        <>
+          <input
+            ref={inputRef}
+            className="input__items--text"
+            value={editTodo}
+            type="input"
+            onChange={(e) => setEditTodo(e.target.value)}
+            required
+          />
+          <span className="icon" onClick={(e) => handleEdit(e, todo.id)}>
+            <MdDownloadDone className="edit__icon" />
+          </span>
+        </>
       ) : todo.isDone ? (
         <s className="todos__items--text">{todo.todo}</s>
       ) : (
@@ -54,13 +84,13 @@ export const TodoListItems = ({ todo, key, todos, setTodos }: Props) => {
             }
           }}
         >
-          <AiFillEdit />
+          <AiFillEdit className="edit__icon" />
         </span>
         <span className="icon" onClick={() => handleDelete(todo.id)}>
-          <AiFillDelete />
+          <AiFillDelete className="edit__icon" />
         </span>
         <span className="icon" onClick={() => handleDone(todo.id)}>
-          <MdOutlineDone />
+          <MdOutlineDone className="edit__icon" />
         </span>
       </div>
     </form>
