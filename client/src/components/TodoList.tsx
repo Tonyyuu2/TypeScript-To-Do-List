@@ -1,7 +1,8 @@
 import React from "react";
 import { Todo } from "../model";
 import "./styles.css";
-import { TodoListItems } from "./TodoListItems";
+import { ActiveItems } from "./ActiveItems";
+import { CompletedItems } from "./CompletedItems";
 
 interface Props {
   active: Todo[];
@@ -24,7 +25,7 @@ export const TodoList = ({
             >
               <span className="todos__heading">Active Tasks</span>
               {active.map((todo) => (
-                <TodoListItems
+                <ActiveItems
                   todo={todo}
                   key={todo.id}
                   complete={complete}
@@ -33,11 +34,11 @@ export const TodoList = ({
                   setActive={setActive}
                 />
               ))}
-            </div>;
+            </div>
           <div className="todos remove">
             <span className="todos__heading">Completed Tasks</span>
             {complete.map((todo) => (
-              <TodoListItems
+              <CompletedItems
                 todo={todo}
                 key={todo.id}
                 active={active}

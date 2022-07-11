@@ -13,14 +13,15 @@ interface Props {
   setComplete: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
-export const TodoListItems = ({ todo, key, active, setActive, complete, setComplete }: Props) => {
+export const ActiveItems = ({ todo, key, active, setActive, complete, setComplete }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
   const handleDone = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, id: number) => {
     e.preventDefault()
-    const transferData = active.filter((todo) => todo.id === id) 
-    setActive(active.filter((todo) => todo.id !== id))
+    const transferData = active.filter((todo) => todo.id === id)
+    const newActiveData = active.filter((todo) => todo.id !== id)
+    setActive(newActiveData)
     setComplete(prev => [...prev, ...transferData])
   };
 
@@ -58,6 +59,7 @@ export const TodoListItems = ({ todo, key, active, setActive, complete, setCompl
   }, [edit]);
 
   return (
+
     <form className="todos__items" onSubmit={(e) => handleEdit(e, todo.id)}>
       {edit ? (
         <>
@@ -73,8 +75,6 @@ export const TodoListItems = ({ todo, key, active, setActive, complete, setCompl
             <MdDownloadDone className="edit__icon" />
           </span>
         </>
-      ) : todo.isDone ? (
-        <s className="todos__items--text">{todo.todo}</s>
       ) : (
         <span className="todos__items--text">{todo.todo}</span>
       )}
@@ -90,7 +90,7 @@ export const TodoListItems = ({ todo, key, active, setActive, complete, setCompl
         >
           <AiFillEdit className="edit__icon" />
         </span>
-        <span className="icon" onClick={() => handleDelete(todo.id)}>
+        <span className="icon" onClick={() => handleActiveDelete(todo.id)}>
           <AiFillDelete className="edit__icon" />
         </span>
         <span className="icon" onClick={(e) => handleDone(e, todo.id)}>
