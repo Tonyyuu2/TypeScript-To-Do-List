@@ -7,39 +7,43 @@ import { MdOutlineDone, MdDownloadDone } from "react-icons/md";
 interface Props {
   key: number;
   todo: Todo;
-  todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  active: Todo[];
+  setActive: React.Dispatch<React.SetStateAction<Todo[]>>;
+  complete: Todo[];
+  setComplete: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
-export const TodoListItems = ({ todo, key, todos, setTodos }: Props) => {
+export const TodoListItems = ({ todo, key, active, setActive, complete, setComplete }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
-  const handleDone = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
-      )
-    );
+  const handleDone = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, id: number) => {
+    e.preventDefault()
+    const transferData = active.filter((todo) => todo.id === id) 
+    setActive(active.filter((todo) => todo.id !== id))
+    setComplete(prev => [...prev, ...transferData])
   };
 
-  const handleDelete = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const handleActiveDelete = (id: number) => {
+    setActive(active.filter((todo) => todo.id !== id));
+  };
+  const handleCompleteDelete = (id: number) => {
+    setComplete(complete.filter((todo) => todo.id !== id));
   };
 
   const handleEdit = (e: React.FormEvent<EventTarget>, id: number) => {
     e.preventDefault();
 
     if (editTodo === "") {
-      setTodos(
-        todos.map((todo) =>
+      setActive(
+        active.map((todo) =>
           todo.id === id ? { ...todo, todo: todo.todo } : todo
         )
       );
       setEditTodo(todo.todo);
     } else {
-      setTodos(
-        todos.map((todo) =>
+      setActive(
+        active.map((todo) =>
           todo.id === id ? { ...todo, todo: editTodo } : todo
         )
       );
@@ -89,7 +93,7 @@ export const TodoListItems = ({ todo, key, todos, setTodos }: Props) => {
         <span className="icon" onClick={() => handleDelete(todo.id)}>
           <AiFillDelete className="edit__icon" />
         </span>
-        <span className="icon" onClick={() => handleDone(todo.id)}>
+        <span className="icon" onClick={(e) => handleDone(e, todo.id)}>
           <MdOutlineDone className="edit__icon" />
         </span>
       </div>

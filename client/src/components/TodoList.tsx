@@ -4,13 +4,17 @@ import "./styles.css";
 import { TodoListItems } from "./TodoListItems";
 
 interface Props {
-  todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  active: Todo[];
+  setActive: React.Dispatch<React.SetStateAction<Todo[]>>;
+  complete: Todo[];
+  setComplete: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
 export const TodoList = ({
-  todos,
-  setTodos,
+  active,
+  setActive,
+  complete,
+  setComplete
 }: Props) => {
   return (
     <>
@@ -19,23 +23,27 @@ export const TodoList = ({
               className="todos"
             >
               <span className="todos__heading">Active Tasks</span>
-              {todos.map((todo) => (
+              {active.map((todo) => (
                 <TodoListItems
                   todo={todo}
                   key={todo.id}
-                  todos={todos}
-                  setTodos={setTodos}
+                  complete={complete}
+                  setComplete={setComplete}
+                  active={active}
+                  setActive={setActive}
                 />
               ))}
             </div>;
           <div className="todos remove">
             <span className="todos__heading">Completed Tasks</span>
-            {todos.map((todo) => (
+            {complete.map((todo) => (
               <TodoListItems
                 todo={todo}
                 key={todo.id}
-                todos={todos}
-                setTodos={setTodos}
+                active={active}
+                setActive={setActive}
+                complete={complete}
+                setComplete={setComplete}
               />
             ))}
           </div>
