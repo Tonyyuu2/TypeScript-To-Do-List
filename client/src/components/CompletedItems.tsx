@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import "./styles.css";
 import { Todo } from "../model";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
-import { MdOutlineDone, MdDownloadDone, MdOutlineKeyboardReturn } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
+import { MdOutlineKeyboardReturn } from "react-icons/md";
 
 
 
